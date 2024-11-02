@@ -38,6 +38,8 @@ DATASETS = [
     "SpawriousM2M_easy",
     "SpawriousM2M_medium",
     "SpawriousM2M_hard",
+    "PunchMarksDefault",
+    "PunchMarksSweep"
 ]
 
 def get_dataset_class(dataset_name):
