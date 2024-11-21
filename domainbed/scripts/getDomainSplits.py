@@ -133,7 +133,7 @@ if __name__ == "__main__":
     TODO: the below root_save should give a path to a folder when the given
     labled images and text files should be saved
     '''
-    root_save = '/'
+    root_save = '/home/wep25/rds/hpc-work/Sprints/DG_Oct2024/Data/DataSplits/'
     print(os.getcwd)
     for env_i, env in enumerate(dataset):
         uda = []
