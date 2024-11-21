@@ -50,16 +50,14 @@ python baseline-slf-resnet50-aug.py
 Would give results when a ResNet-50 (with data augmentaiton) is trained on the sfa or slf domain. Again, filepaths and any parameters should be changed in the .py directly. For these experiments we use the environment given in Environments/dgEnv2.yml.
 
 ## Data
-We use an PyTorch ImageFolder dataset directory structure (inheriting the 
-
+We use an torchvision.datasets.ImageFolder directory structure (and using a custom class which inherits the DomainBed MultipleDomainDataset class).
 
 To get the train/validation splits created by DomainBed (so that baseline convolutional neural network baselines have the same train/valid splits), we use the following
 ```sh
 python -m domainbed.scripts.getDomainSplits --dataset PunchMarksDefault --test_env 0 1 2 3  --seed [seed_number] --trial_seed [trial_number] --output_dir dataSplits/dataSplit_default_trial[trial_number]-[seed_number]
 ```
-where as before \[trial_number\] ranges between 0 and 3 (and \[seed_number\] is arbitrary and should not affect the outcome, and so can be set to 0).
+where as before \[trial_number\] ranges between 0 and 3 (and \[seed_number\] is arbitrary and should not affect the outcome, and so can be set to 0). This will show the data augmentations used. To remove these data augmentations, the datasets.py file should be modified to make the augmentation transform match the default transform.
 
-
-
-
+## Analysis
+We compute summary statistics using the scripts found in the analysis folder. These include train-domain validation and test-domain validation model selection for the experiments (when following the folder/name structure used above).
 
