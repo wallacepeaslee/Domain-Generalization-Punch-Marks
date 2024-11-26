@@ -51,8 +51,7 @@ class CustomDataset(Dataset):
         return imagePIL, label
 
 
-def runValidExperiment(trainTxtFilePath, validTxtFilePath, mcbTxtFilePath, FitzTxtFilePath, CologneTxtFilePath, savePath, trialNums):    
-    savePath = '' #TODO: add savepath
+def runValidExperiment(trainTxtFilePath, validTxtFilePath, mcbTxtFilePath, FitzTxtFilePath, CologneTxtFilePath, MicroscopyTxtFilePath, savePath, trialNums):    
     numClasses = 17
     batchSize = 32
     
@@ -90,19 +89,24 @@ def runValidExperiment(trainTxtFilePath, validTxtFilePath, mcbTxtFilePath, FitzT
     CologneLoader = torch.utils.data.DataLoader(CologneSet, shuffle = False, batch_size = batchSize)
     
     
+    microscopySet = CustomDataset(MicroscopyTxtFilePath, transform = data_transform_paper)
+    microscopyLoader = torch.utils.data.DataLoader(microscopySet, shuffle = False, batch_size = batchSize)
+    
     dataLoadersDict = {'train' : trainLoader,
                        'valid' : validLoader,
                        'mcb' : mcbLoader,
                        'fitz': FitzLoader,
-                       'cologne': CologneLoader}
+                       'cologne': CologneLoader,
+                       '385': microscopyLoader}
     dataSizesDict = {'train' : len(trainSet),
                        'valid' : len(validSet),
                        'mcb' : len(mcbSet),
                        'fitz': len(FitzSet),
-                       'cologne': len(CologneSet)}
+                       'cologne': len(CologneSet),
+                       '385': len(microscopySet)}
     print(dataSizesDict)
     
-    model_ft = models.resnet18(pretrained=True)#(weights=models.ResNet18_Weights.IMAGENET1K_V1)
+    model_ft = models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1)
     numFeaturesDefault = model_ft.fc.in_features
     
     model_ft.fc = nn.Linear(numFeaturesDefault, numClasses)
@@ -169,9 +173,9 @@ def train_model(model, lossFunction, optimizer, scheduler, dataloaders, dataSize
                 currBestEpoch = epochNum
             #print("Epoch loss:", epochLoss)
             #print("Epoch accuracy", epochAccuracy)
-            print(f'Loss: {epochLoss:.4f}')
-            print(f'Accuracy: {epochAccuracy:.4f}')
-            resStr += '\n\t' + phase + f'\tLoss: {epochLoss:.4f}' + f'\tAccuracy: {epochAccuracy:.4f}'
+            print(f'Loss: {epochLoss:.8f}')
+            print(f'Accuracy: {epochAccuracy:.8f}')
+            resStr += '\n\t' + phase + f'\tLoss: {epochLoss:.8f}' + f'\tAccuracy: {epochAccuracy:.8f}'
             print('-'*10)
     print('Complete,', time.time() - startTime)
     print('best epoch:', currBestEpoch, currBestAccuracy)
@@ -213,15 +217,27 @@ if __name__ == "__main__":
     
     
     '''
-    The below are test domain filepaths
+    TODO: update the below train domain filepaths
     '''
-    mcbFilePath = ''
-    FitzFilePath = ''
-    CologneFilePath = ''
+    trainFilePaths = ['train_split0.txt',
+                      'train_split1.txt',
+                      'train_split2.txt']
+    validFilePaths = ['valid_split0.txt',
+                      'valid_split1.txt',
+                      'valid_split2.txt']
+    
+    
+    '''
+    TODO: update the below test domain filepaths
+    '''
+    mcbFilePath = 'mcb_test.txt'
+    FitzFilePath = 'fitz_test.txt'
+    CologneFilePath = 'cologne_test.txt'
+    microscopyTestFilePath = 'microscopy_test.txt'
     
    
     '''
-    The below is a folder path where output information should be saved.
+    TODO: Update the below, which is a folder path where output information should be saved.
     '''
     outputSavePath = ''
    
@@ -233,10 +249,6 @@ if __name__ == "__main__":
                                mcbFilePath,
                                FitzFilePath,
                                CologneFilePath,
+                               microscopyTestFilePath,
                                outputSavePath,
                                (dataSplit, randomTrial))
-    
- 
-    
-    
-    
