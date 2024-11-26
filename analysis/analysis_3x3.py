@@ -1,17 +1,10 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Jun 22 20:20:52 2024
-
-@author: walla
-"""
-
 
 import json
 import os
 import numpy as np
 
 ENVIRONMENT_LENGTHS = []
-
 
 #492, 98/394
 #2211, 442/1769

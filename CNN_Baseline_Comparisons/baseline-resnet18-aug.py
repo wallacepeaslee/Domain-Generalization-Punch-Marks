@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Mar  7 16:55:26 2023
 
-@author: Wallace Peaslee
-"""
 
 import torchvision.transforms as transforms
 from torchvision import models

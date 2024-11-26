@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Jun 22 20:20:52 2024
-
-@author: walla
-"""
 
 
 import json
